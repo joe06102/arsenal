@@ -1,0 +1,11 @@
+{
+  "extends": "@tsconfig/node12/tsconfig.json",
+  "include": ["src"],
+  "compilerOptions": {
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "outDir": "lib",
+    "declaration": true,
+    "resolveJsonModule": true
+  }
+}
