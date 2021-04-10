@@ -2,10 +2,11 @@
   "name": "arsenal",
   "version": "1.0.0",
   "description": "A light-weighted micro framework for creating cli tools.",
-  "main": "index.js",
+  "main": "lib/index.js",
   "scripts": {
     "build": "tsc",
-    "prepack": "npm run build"
+    "prepack": "npm run build",
+    "demo": "ts-node Example/index.ts"
   },
   "repository": {
     "type": "git",
@@ -27,11 +28,13 @@
     "lodash.get": "^4.4.2",
     "ora": "^5.4.0",
     "progress": "^2.0.3",
+    "reflect-metadata": "^0.1.13",
     "tapable": "^2.2.0",
     "tsyringe": "^4.5.0"
   },
   "devDependencies": {
     "@types/lodash.get": "^4.4.6",
+    "ts-node": "^9.1.1",
     "typescript": "^4.2.3"
   }
 }

@@ -5,13 +5,16 @@ export interface IArsenalCommandOption<T> {
   Name: string;
   Description: string;
   Default?: T;
+  Required?: boolean;
   Parse(raw: string): T;
 }
 
-export interface IArsenalCommand<PipelineCutPoint, Option> {
+export interface IArsenalCommand<
+  PipelineCutPoint = void | Error,
+  Option = unknown
+> {
   Name: string;
   Description: string;
-  Required?: boolean;
-  Options: IArsenalCommandOption<Option>;
+  Options: IArsenalCommandOption<Option>[];
   Pipeline: IPipeline<PipelineCutPoint>;
 }

@@ -1,16 +1,6 @@
-import { injectable } from "tsyringe";
+export type ContextKey = string | symbol;
 
-type ContextKey = string | symbol;
-
-@injectable()
-export class PipelineContext {
-  private map: Map<ContextKey, unknown> = new Map();
-
-  Get<T>(key: ContextKey) {
-    return this.map.get(key) as T;
-  }
-
-  Set<T>(key: ContextKey, value: T) {
-    this.map.set(key, value);
-  }
+export interface IPipelineContext {
+  Get<T>(key: ContextKey): T;
+  Set<T>(key: ContextKey, value: T): void;
 }

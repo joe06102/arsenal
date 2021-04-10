@@ -1,4 +1,4 @@
-import { PipelineContext } from "./Context";
+import { IPipelineContext } from "./Context";
 import { IPipeline } from "./Pipeline";
 
 export interface ICutPoint<T> {
@@ -17,5 +17,5 @@ export interface ICutPoint<T> {
    * cut point handler
    * @param ctx
    */
-  Intercept(ctx: PipelineContext): Promise<T>;
+  Intercept(ctx: IPipelineContext): Promise<T>;
 }

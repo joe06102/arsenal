@@ -1,11 +1,11 @@
-import { PipelineContext } from "./Context";
+import { IPipelineContext } from "./Context";
 import { ICutPoint } from "./CutPoint";
 
 export interface IPipeline<CutPointReturn> {
   /**
    * pipeline scoped context
    */
-  Context: PipelineContext;
+  Context: IPipelineContext;
 
   /**
    * register cut point to the pipeline
@@ -16,7 +16,7 @@ export interface IPipeline<CutPointReturn> {
   /**
    * start the pipeline
    */
-  Run(): void;
+  Run(userOptions: Record<string, unknown>): void;
 }
 
 export interface IPipelineConstructor<CutPointReturn> {

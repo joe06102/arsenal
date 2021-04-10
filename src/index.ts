@@ -1,12 +1,18 @@
+import "reflect-metadata";
 import { program } from "commander";
 import { container } from "tsyringe";
-import { PipelineContext } from "./Abstract/Context";
+import {
+  AsyncSeriesHook,
+  AsyncSeriesBailHook,
+  AsyncParallelHook,
+} from "tapable";
 import { ServiceConfigProvider, RCConfigProvider } from "./Abstract/Provider";
 import { ArsenalConfig } from "./Abstract/Config";
-import { IArsenalCommand } from "./Abstract/Command";
 import { TerminalLogger } from "./Logger/TerminalLogger";
 import { InternalConfig } from "./Config/InternalConfig";
+import { ChainablePipelineContext } from "./Context/ChainablePipelineContext";
 import { IPipeline, IPipelineConstructor } from "./Abstract/Pipeline";
+import { CutPointType } from "./Constant/CutPoint";
 
 export class Arsenal {
   private config: ArsenalConfig;
@@ -17,6 +23,7 @@ export class Arsenal {
 
   ConfigVersion(version: string) {
     this.config.Version = version;
+    return this;
   }
 
   ConfigRC(provider: RCConfigProvider) {
@@ -49,6 +56,22 @@ export class Arsenal {
     container.register("IConfig", {
       useClass: InternalConfig,
     });
+
+    // register internal PipelineContext
+    container.register("IPipelineContext", {
+      useClass: ChainablePipelineContext,
+    });
+
+    //tapable registry
+    container.register(CutPointType.Basic, {
+      useFactory: () => new AsyncSeriesHook(["ctx"]),
+    });
+    container.register(CutPointType.Bail, {
+      useFactory: () => new AsyncSeriesBailHook(["ctx"]),
+    });
+    container.register(CutPointType.Parallel, {
+      useFactory: () => new AsyncParallelHook(["ctx"]),
+    });
     //#endregion
 
     //#region external service registry
@@ -58,9 +81,9 @@ export class Arsenal {
     return this;
   }
 
-  ConfigCommand(cmd: IArsenalCommand<void | Error, unknown>) {
+  ConfigCommand(cmd: any) {
     if (!this.config.Commands.find((c) => c.Name === cmd.Name)) {
-      this.config.Commands.push(cmd);
+      this.config.Commands.push(container.resolve(cmd));
     }
     return this;
   }
@@ -78,29 +101,25 @@ export class Arsenal {
           const options = this.opts();
 
           if (command.Pipeline) {
-            const pipeline = createPipeline(
-              (command.Pipeline as unknown) as IPipelineConstructor<void | Error>,
-              options
-            );
-            pipeline.Run();
+            command.Pipeline.Run(options);
           }
         });
 
       if (Array.isArray(command.Options)) {
         command.Options.forEach((opt) => {
-          if (opt.required) {
+          if (opt.Required) {
             cmd.requiredOption(
-              opt.name,
-              opt.description,
-              opt.parse || ((val) => val),
-              opt.default
+              opt.Name,
+              opt.Description,
+              opt.Parse || ((val) => val),
+              opt.Default
             );
           } else {
             cmd.option(
-              opt.name,
-              opt.description,
-              opt.parse || ((val) => val),
-              opt.default
+              opt.Name,
+              opt.Description,
+              opt.Parse || ((val) => val),
+              opt.Default
             );
           }
         });
@@ -108,12 +127,20 @@ export class Arsenal {
     });
 
     program.parse(process.argv);
+    return this;
   }
 }
 
 function createPipeline(
-  ctor: IPipelineConstructor<void | Error>,
-  options: Record<string, unknown>
+  ctor: IPipelineConstructor<void | Error>
 ): IPipeline<void | Error> {
-  return new ctor(options);
+  return container.resolve(ctor);
 }
+
+export { ILogger } from "./Abstract/Logger";
+export { IArsenalCommand, IArsenalCommandOption } from "./Abstract/Command";
+export { BasicPipeline } from "./Pipeline/BasicPipeline";
+export { BailPipeline } from "./Pipeline/BailPipeline";
+export { ParallelPipeline } from "./Pipeline/ParallelPipeline";
+export * from "./CutPoint";
+export * from "tsyringe";
