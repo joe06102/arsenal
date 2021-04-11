@@ -3,21 +3,17 @@ import { AsyncParallelHook } from "tapable";
 import { IPipelineContext } from "../Abstract/Context";
 import { ICutPoint } from "../Abstract/CutPoint";
 import { IPipeline } from "../Abstract/Pipeline";
-import { CutPointType } from "../Constant/CutPoint";
+import { CutPointToken } from "../Constant/Token";
 
 export class ParallelPipeline implements IPipeline<void> {
   private collectCutPoints = container.resolve<
     AsyncParallelHook<IPipelineContext>
-  >(CutPointType.Basic);
+  >(CutPointToken.Basic);
 
   Context: IPipelineContext = container.resolve("IPipelineContext");
 
   Register(cutpoint: ICutPoint<void>): void {
-    if (
-      cutpoint &&
-      typeof cutpoint.Cut === "function" &&
-      typeof cutpoint.Intercept === "function"
-    ) {
+    if (typeof cutpoint?.Intercept === "function") {
       this.collectCutPoints.tapPromise(
         cutpoint.Name,
         cutpoint.Intercept.bind(cutpoint)

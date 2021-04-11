@@ -1,6 +1,8 @@
+import { singleton } from "tsyringe";
 import chalk from "chalk";
 import { ILogger } from "../Abstract/Logger";
 
+@singleton()
 export class TerminalLogger implements ILogger {
   Info(...args: string[]): void {
     console.log(chalk.blue(`[${new Date().toLocaleString()} Info]:`), ...args);

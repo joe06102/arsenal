@@ -1,12 +1,12 @@
 import { IPipeline } from "./Pipeline";
 
-export interface IArsenalCommandOption<T> {
+export interface IArsenalCommandOption<T = string> {
   Type: string;
   Name: string;
   Description: string;
   Default?: T;
   Required?: boolean;
-  Parse(raw: string): T;
+  Parse?: (raw: string) => T;
 }
 
 export interface IArsenalCommand<

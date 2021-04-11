@@ -6,6 +6,6 @@ export interface IConfig {
 
 export class ArsenalConfig {
   Version = "";
-  RCFile = "";
+  ConfigFile = "";
   Commands: IArsenalCommand<void | Error, unknown>[] = [];
 }

@@ -1,18 +1,11 @@
 import "reflect-metadata";
 import { program } from "commander";
 import { container } from "tsyringe";
-import {
-  AsyncSeriesHook,
-  AsyncSeriesBailHook,
-  AsyncParallelHook,
-} from "tapable";
+import * as Token from "./Constant/Token";
+import { DIContainer } from "./DIContainer";
 import { ServiceConfigProvider, RCConfigProvider } from "./Abstract/Provider";
 import { ArsenalConfig } from "./Abstract/Config";
-import { TerminalLogger } from "./Logger/TerminalLogger";
-import { InternalConfig } from "./Config/InternalConfig";
-import { ChainablePipelineContext } from "./Context/ChainablePipelineContext";
 import { IPipeline, IPipelineConstructor } from "./Abstract/Pipeline";
-import { CutPointType } from "./Constant/CutPoint";
 
 export class Arsenal {
   private config: ArsenalConfig;
@@ -34,7 +27,9 @@ export class Arsenal {
     }
 
     provider(this.config);
-    container.register("ConfigRC", { useValue: this.config.RCFile });
+    container.register(Token.ConfigToken.ConfigFile, {
+      useValue: this.config.ConfigFile,
+    });
 
     return this;
   }
@@ -46,32 +41,8 @@ export class Arsenal {
       );
     }
     //#region internal service registry
-
-    // register internal terminal logger
-    container.register("ILogger", {
-      useClass: TerminalLogger,
-    });
-
-    // register internal ConfigReader
-    container.register("IConfig", {
-      useClass: InternalConfig,
-    });
-
-    // register internal PipelineContext
-    container.register("IPipelineContext", {
-      useClass: ChainablePipelineContext,
-    });
-
-    //tapable registry
-    container.register(CutPointType.Basic, {
-      useFactory: () => new AsyncSeriesHook(["ctx"]),
-    });
-    container.register(CutPointType.Bail, {
-      useFactory: () => new AsyncSeriesBailHook(["ctx"]),
-    });
-    container.register(CutPointType.Parallel, {
-      useFactory: () => new AsyncParallelHook(["ctx"]),
-    });
+    const builtinContainer = new DIContainer(this.config);
+    builtinContainer.Initialize();
     //#endregion
 
     //#region external service registry
@@ -144,3 +115,4 @@ export { BailPipeline } from "./Pipeline/BailPipeline";
 export { ParallelPipeline } from "./Pipeline/ParallelPipeline";
 export * from "./CutPoint";
 export * from "tsyringe";
+export * as Token from "./Constant/Token";

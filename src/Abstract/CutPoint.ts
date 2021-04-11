@@ -7,11 +7,6 @@ export interface ICutPoint<T> {
    * it will be used in the registry.
    */
   Name: string;
-  /**
-   * the pipeline to be cut
-   * @param pipeline
-   */
-  Cut(pipeline: IPipeline<T>): void;
 
   /**
    * cut point handler
