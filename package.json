@@ -1,6 +1,6 @@
 {
   "name": "jsouee-arsenal",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A light-weighted micro framework for creating cli tools.",
   "main": "lib/index.js",
   "scripts": {
