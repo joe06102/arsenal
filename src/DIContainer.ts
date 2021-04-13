@@ -5,7 +5,7 @@ import {
   AsyncParallelHook,
 } from "tapable";
 import { TerminalLogger } from "./Logger/TerminalLogger";
-import { InternalConfig } from "./Config/InternalConfig";
+import { CosmicConfig } from "./Config/CosmicConfig";
 import { ChainablePipelineContext } from "./Context/ChainablePipelineContext";
 import { ArsenalConfig } from "./Abstract/Config";
 import * as Token from "./Constant/Token";
@@ -25,7 +25,7 @@ export class DIContainer {
 
     // register internal ConfigReader
     container.register(Token.ConfigToken.IConfig, {
-      useClass: InternalConfig,
+      useClass: CosmicConfig,
     });
 
     // register internal PipelineContext

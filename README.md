@@ -1,10 +1,16 @@
 一个用于创建命令行的框架。优点是轻量、灵活。
 
-# 为什么叫 Arsenal
+## 安装
+
+```shell
+npm install jsouee-arsenal
+```
+
+## 为什么叫 Arsenal
 
 Arsenal 源于 switch 上首发的机甲游戏 [《恶魔机甲》](https://www.nintendo.com/games/detail/daemon-x-machina-switch/)中的基础机甲，在其基础之上可以增强为多种类型的机甲。
 
-# 概念
+## 概念
 
 Arsenal 核心基于 AOP 实现了灵活的插件机制。每一个指令都是一条独立的管道（Pipeline），每条管道都有一个独立的上下文（Context）用于挂载需要共享的数据， 每条管道上可以任意插入多个切入点（CutPoint）。
 
@@ -22,7 +28,7 @@ Arsenal 核心基于 AOP 实现了灵活的插件机制。每一个指令都是�
 
 ```
 
-# 管道（Pipeline）
+## 管道（Pipeline）
 
 Arsenal 中的管道分为 3 种类型，分别是：**基础管道（BasicPipeline）**，**可中断管道（BailPipeline）**，**并行管道（ParallelPipeline）**。
 
@@ -35,7 +41,7 @@ Arsenal 中的管道分为 3 种类型，分别是：**基础管道（BasicPipel
 定义一个基础管道（injectable 主要负责依赖注入，下面模块会详细说明）：
 
 ```typescript
-import { BasicPipeline, injectable } from "arsenal";
+import { BasicPipeline, injectable } from "jsouee-arsenal";
 import { LoginCutPoint } from "../CutPoint/LoginCutPoint";
 
 @injectable()
@@ -48,19 +54,19 @@ export class InitPipeline extends BasicPipeline {
 }
 ```
 
-## 基础管道（BasicPipeline)
+### 基础管道（BasicPipeline)
 
 基础管道只支持注册**基础切入点**，并且会按照注册顺序执行切入点，支持同步、异步的切入点处理函数。
 
-## 可中断管道（BailPipeline)
+### 可中断管道（BailPipeline)
 
 可中断管道只支持注册**可中断切入点**，并且会按照注册顺序执行切入点，支持同步、异步的切入点处理函数。不同于基础管道，如果切入点的上一个处理函数返回了 Error 实例，则立即中断处理流程，不会再执行后续切入点。
 
-## 并行管道（ParallelPipeline)
+### 并行管道（ParallelPipeline)
 
 并行管道只支持注册**并行切入点**，并且会并行的执行切入点，支持同步、异步的切入点处理函数（对于同步处理函数，并行的效果等同于基础管道）。
 
-# 切入点（CutPoint）
+## 切入点（CutPoint）
 
 切入点对应了 3 种类型的管道，分别是：**基础切入点（BasicCutPoint）**，**可中断切入点（BailCutPoint）**，**并行切入点（ParallelCutPoint）**。
 
@@ -76,7 +82,7 @@ import {
   injectable,
   ILogger,
   Token,
-} from "arsenal";
+} from "jsouee-arsenal";
 
 @injectable()
 export class LoginCutPoint extends BasicCutPoint {
@@ -94,19 +100,19 @@ export class LoginCutPoint extends BasicCutPoint {
 }
 ```
 
-## 基础切入点（BasicCutPoint)
+### 基础切入点（BasicCutPoint)
 
 按照注册顺序被执行。`Intercept` 支持同步、异步。
 
-## 可中断切入点（BailCutPoint)
+### 可中断切入点（BailCutPoint)
 
 按照注册顺序被执行。`Intercept` 支持同步、异步。不同于基础切入点，可中断切入点支持返回 Error 实例，用于立即中断管道中后续切入点的执行。
 
-## 并行切入点（ParallelCutPoint)
+### 并行切入点（ParallelCutPoint)
 
 并行地被执行。`Intercept` 支持同步、异步（推荐只在使用异步，同步效果同基础切入点）。
 
-# 命令（Command）
+## 命令（Command）
 
 命令是命令行中常见的参数，例如 npm 支持 `install`， `uninstall` 等命令；
 
@@ -122,7 +128,11 @@ Arsenal 中定义了命令的结构 `IArsenalCommand`，用户在自定义命令
 例如，创建一个初始化的命令：
 
 ```typescript
-import { IArsenalCommand, IArsenalCommandOption, injectable } from "arsenal";
+import {
+  IArsenalCommand,
+  IArsenalCommandOption,
+  injectable,
+} from "jsouee-arsenal";
 import { InitPipeline } from "../Pipeline/InitPipeline";
 
 @injectable()
@@ -143,7 +153,7 @@ export class InitCommand implements IArsenalCommand {
 }
 ```
 
-## 命令参数 IArsenalCommandOption
+### 命令参数 IArsenalCommandOption
 
 整体结构类似 `IArsenalCommand`, 需要注意 `Name` 属性必须以 `--` 开头，详细可以参见 [commander.js](https://github.com/tj/commander.js)
 
@@ -158,7 +168,64 @@ export interface IArsenalCommandOption<T = string> {
 }
 ```
 
-# 应用入口
+## 脚手架配置文件
+
+Arsenal 内置了常见的配置文件读取功能，用于配置脚手架的行为，可以通过入口文件配置 `configRC` 方法配置 配置文件的名称。
+
+例如：如果配置了名称为 `demo`，则 Arsenal 在启动时会去搜索并读取下列格式的文件：
+
+- .demorc,
+- .demorc.json
+- .demorc.yaml
+- .demorc.yml
+- .demorc.js
+- .demorc.cjs
+- demo.config.js
+- demo.config.cjs
+
+```typescript
+const arsenal = new Arsenal()
+  // 设置脚手架配置文件的名称为demo
+  .ConfigRC((options) => (options.Module = "demo"));
+```
+
+### 读取配置文件
+
+设置完脚手架配置文件的名称后，就可以在自定义的 `Pipeline` 或者 `CutPoint` 中通过 **依赖注入** 的方式使用。
+
+```typescript
+import {
+  BasicCutPoint,
+  inject,
+  injectable,
+  ILogger,
+  IConfig,
+  IPipelineContext,
+  Token,
+} from "jsouee-arsenal";
+
+@injectable()
+export class LoginCutPoint extends BasicCutPoint {
+  Name = LoginCutPoint.name;
+
+  constructor(
+    @inject(Token.LoggerToken.ILogger) private logger: ILogger,
+    @inject(Token.ConfigToken.IConfig) private config: IConfig
+  ) {
+    super();
+  }
+
+  async Intercept(ctx: IPipelineContext): Promise<void> {
+    this.logger.Info(
+      `[${LoginCutPoint.name}] ctx: ${ctx.Get(
+        "options.name"
+      )}, config: ${this.config.Get<string>("entry.name")}`
+    );
+  }
+}
+```
+
+## 应用入口
 
 ```typescript
 import { Arsenal } from "Arsenal";
@@ -166,7 +233,7 @@ import { InitCommand } from "./Command/Init";
 
 const arsenal = new Arsenal()
   // 配置资源文件的名称
-  .ConfigRC((options) => (options.ConfigFile = "demorc.js"))
+  .ConfigRC((options) => (options.Module = "demo"))
   // 配置版本号，建议直接从package.json中获取
   .ConfigVersion("1.0.0")
   // 配置自定义的依赖注入服务
@@ -177,7 +244,7 @@ const arsenal = new Arsenal()
   .Run();
 ```
 
-# 控制反转
+## 控制反转
 
 为了提高代码的可测试性、可维护性、整洁度等，Arsenal 推荐全部使用**依赖注入容器**来实例化依赖的服务，并在启动前手动在 `ConfigService` 中注册自己定义的依赖。
 
@@ -224,10 +291,10 @@ export class LoginCutPoint extends BasicCutPoint {
 }
 ```
 
-# 完整 Demo
+## 完整 Demo
 
 查看源代码中 Example 目录
 
-# 建议
+## 建议
 
 Arsenal 目前还是初版，如果有意见，欢迎 issue 交流。

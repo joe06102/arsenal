@@ -26,9 +26,9 @@ export class Arsenal {
       );
     }
 
-    provider(this.config);
-    container.register(Token.ConfigToken.ConfigFile, {
-      useValue: this.config.ConfigFile,
+    provider(this.config.ConfigRCOptions);
+    container.register(Token.ConfigToken.ConfigOptions, {
+      useValue: this.config.ConfigRCOptions,
     });
 
     return this;
@@ -102,14 +102,9 @@ export class Arsenal {
   }
 }
 
-function createPipeline(
-  ctor: IPipelineConstructor<void | Error>
-): IPipeline<void | Error> {
-  return container.resolve(ctor);
-}
-
 export { ILogger } from "./Abstract/Logger";
 export { IArsenalCommand, IArsenalCommandOption } from "./Abstract/Command";
+export { IConfig } from "./Abstract/Config";
 export { BasicPipeline } from "./Pipeline/BasicPipeline";
 export { BailPipeline } from "./Pipeline/BailPipeline";
 export { ParallelPipeline } from "./Pipeline/ParallelPipeline";

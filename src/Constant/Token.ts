@@ -10,7 +10,7 @@ export enum LoggerToken {
 
 export enum ConfigToken {
   IConfig = "IConfig",
-  ConfigFile = "ConfigFile",
+  ConfigOptions = "ConfigOptions",
 }
 
 export enum ContextToken {

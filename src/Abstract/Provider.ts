@@ -1,10 +1,10 @@
 import { container } from "tsyringe";
-import { ArsenalConfig } from "./Config";
+import { ArsenalConfig, ConfigOptions } from "./Config";
 
 export interface ServiceConfigProvider {
   (diContainer: typeof container): void;
 }
 
 export interface RCConfigProvider {
-  (config: ArsenalConfig): void;
+  (options: ConfigOptions): void;
 }

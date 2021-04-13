@@ -5,7 +5,13 @@ export interface IConfig {
 }
 
 export class ArsenalConfig {
-  Version = "";
-  ConfigFile = "";
-  Commands: IArsenalCommand<void | Error, unknown>[] = [];
+  constructor(
+    public Version = "",
+    public ConfigRCOptions = new ConfigOptions(),
+    public Commands: IArsenalCommand<void | Error, unknown>[] = []
+  ) {}
+}
+
+export class ConfigOptions {
+  constructor(public Module?: string, public Required = true) {}
 }
