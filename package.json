@@ -6,7 +6,8 @@
   "scripts": {
     "build": "tsc",
     "prepack": "npm run build",
-    "demo": "ts-node Example/index.ts"
+    "demo": "ts-node Example/index.ts",
+    "pub": "npm version patch -m \"publish version %s\" && npm publish"
   },
   "repository": {
     "type": "git",
