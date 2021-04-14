@@ -1,20 +1,20 @@
-import { container, inject } from "tsyringe";
+import { container } from "tsyringe";
 import { AsyncSeriesBailHook } from "tapable";
-import { IPipelineContext } from "../Abstract/Context";
-import { ICutPoint } from "../Abstract/CutPoint";
-import { IPipeline } from "../Abstract/Pipeline";
-import { CutPointToken } from "../Constant/Token";
+import { IContext } from "../Abstract/Context";
+import { BailCutPoint } from "../Abstract/CutPoint";
+import { Pipeline } from "../Abstract/Pipeline";
+import { CutPointToken, ContextToken } from "../Constant/Token";
 
 type BailReturn = Error | void;
 
-export class BailPipeline implements IPipeline<BailReturn> {
+export class BailPipeline extends Pipeline<BailReturn> {
   private collectCutPoints = container.resolve<
-    AsyncSeriesBailHook<IPipelineContext, BailReturn>
+    AsyncSeriesBailHook<IContext, BailReturn>
   >(CutPointToken.Basic);
 
-  Context: IPipelineContext = container.resolve("IPipelineContext");
+  Context: IContext = container.resolve(ContextToken.IContext);
 
-  Register(cutpoint: ICutPoint<BailReturn>): void {
+  Register(cutpoint: BailCutPoint): void {
     if (typeof cutpoint?.Intercept === "function") {
       this.collectCutPoints.tapPromise(
         cutpoint.Name,

@@ -5,7 +5,7 @@ import * as Token from "./Constant/Token";
 import { DIContainer } from "./DIContainer";
 import { ServiceConfigProvider, RCConfigProvider } from "./Abstract/Provider";
 import { ArsenalConfig } from "./Abstract/Config";
-import { IPipeline, IPipelineConstructor } from "./Abstract/Pipeline";
+import { ArsenalCommand, ArsenalCommandOption } from "./Abstract/Command";
 
 export class Arsenal {
   private config: ArsenalConfig;
@@ -52,9 +52,9 @@ export class Arsenal {
     return this;
   }
 
-  ConfigCommand(cmd: any) {
-    if (!this.config.Commands.find((c) => c.Name === cmd.Name)) {
-      this.config.Commands.push(container.resolve(cmd));
+  ConfigCommand(CMD: any) {
+    if (!this.config.Commands.find((c) => c.Name === CMD.Name)) {
+      this.config.Commands.push(container.resolve(CMD));
     }
     return this;
   }
@@ -77,7 +77,7 @@ export class Arsenal {
         });
 
       if (Array.isArray(command.Options)) {
-        command.Options.forEach((opt) => {
+        command.Options.forEach((opt: ArsenalCommandOption<unknown>) => {
           if (opt.Required) {
             cmd.requiredOption(
               opt.Name,
@@ -103,11 +103,12 @@ export class Arsenal {
 }
 
 export { ILogger } from "./Abstract/Logger";
-export { IArsenalCommand, IArsenalCommandOption } from "./Abstract/Command";
+export { ArsenalCommand, ArsenalCommandOption } from "./Abstract/Command";
 export { IConfig } from "./Abstract/Config";
+export { IContext } from "./Abstract/Context";
 export { BasicPipeline } from "./Pipeline/BasicPipeline";
 export { BailPipeline } from "./Pipeline/BailPipeline";
 export { ParallelPipeline } from "./Pipeline/ParallelPipeline";
-export * from "./CutPoint";
+export * from "./Abstract/CutPoint";
 export * from "tsyringe";
 export * as Token from "./Constant/Token";

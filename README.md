@@ -76,7 +76,7 @@ export class InitPipeline extends BasicPipeline {
 
 ```typescript
 import {
-  IPipelineContext,
+  IContext,
   BasicCutPoint,
   inject,
   injectable,
@@ -94,7 +94,7 @@ export class LoginCutPoint extends BasicCutPoint {
   }
 
   // 定义切入点的处理函数
-  async Intercept(ctx: IPipelineContext): Promise<void> {
+  async Intercept(ctx: IContext): Promise<void> {
     this.logger.Info(`[${LoginCutPoint.name}] ctx: ${ctx.Get("options.name")}`);
   }
 }
@@ -116,7 +116,7 @@ export class LoginCutPoint extends BasicCutPoint {
 
 命令是命令行中常见的参数，例如 npm 支持 `install`， `uninstall` 等命令；
 
-Arsenal 中定义了命令的结构 `IArsenalCommand`，用户在自定义命令时只需要实现该结构即可。
+Arsenal 中定义了命令的结构 `ArsenalCommand`，用户在自定义命令时只需要实现该结构即可。
 
 命令包含了如下属性：
 
@@ -129,17 +129,17 @@ Arsenal 中定义了命令的结构 `IArsenalCommand`，用户在自定义命令
 
 ```typescript
 import {
-  IArsenalCommand,
-  IArsenalCommandOption,
+  ArsenalCommand,
+  ArsenalCommandOption,
   injectable,
 } from "jsouee-arsenal";
 import { InitPipeline } from "../Pipeline/InitPipeline";
 
 @injectable()
-export class InitCommand implements IArsenalCommand {
+export class InitCommand extends ArsenalCommand {
   Name = "init";
   Description = "init your cli";
-  Options: IArsenalCommandOption<string>[] = [
+  Options: ArsenalCommandOption<string>[] = [
     {
       Name: "--name [string]",
       Required: true,
@@ -153,12 +153,12 @@ export class InitCommand implements IArsenalCommand {
 }
 ```
 
-### 命令参数 IArsenalCommandOption
+### 命令参数 ArsenalCommandOption
 
-整体结构类似 `IArsenalCommand`, 需要注意 `Name` 属性必须以 `--` 开头，详细可以参见 [commander.js](https://github.com/tj/commander.js)
+整体结构类似 `ArsenalCommand`, 需要注意 `Name` 属性必须以 `--` 开头，详细可以参见 [commander.js](https://github.com/tj/commander.js)
 
 ```typescript
-export interface IArsenalCommandOption<T = string> {
+export class ArsenalCommandOption<T = string> {
   Type: string;
   Name: string;
   Description: string;
@@ -200,7 +200,7 @@ import {
   injectable,
   ILogger,
   IConfig,
-  IPipelineContext,
+  IContext,
   Token,
 } from "jsouee-arsenal";
 
@@ -215,7 +215,7 @@ export class LoginCutPoint extends BasicCutPoint {
     super();
   }
 
-  async Intercept(ctx: IPipelineContext): Promise<void> {
+  async Intercept(ctx: IContext): Promise<void> {
     this.logger.Info(
       `[${LoginCutPoint.name}] ctx: ${ctx.Get(
         "options.name"

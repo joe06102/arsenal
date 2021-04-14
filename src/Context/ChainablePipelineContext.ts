@@ -1,6 +1,6 @@
-import { IPipelineContext, ContextKey } from "../Abstract/Context";
+import { IContext, ContextKey } from "../Abstract/Context";
 
-export class ChainablePipelineContext implements IPipelineContext {
+export class ChainablePipelineContext implements IContext {
   private map: Map<ContextKey, unknown> = new Map();
 
   private getKeys(key: ContextKey) {

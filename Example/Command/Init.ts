@@ -1,11 +1,11 @@
-import { IArsenalCommand, IArsenalCommandOption, injectable } from "../..";
+import { ArsenalCommand, ArsenalCommandOption, injectable } from "../..";
 import { InitPipeline } from "../Pipeline/InitPipeline";
 
 @injectable()
-export class InitCommand implements IArsenalCommand {
+export class InitCommand extends ArsenalCommand {
   Name = "init";
   Description = "init your cli";
-  Options: IArsenalCommandOption<string>[] = [
+  Options: ArsenalCommandOption<string>[] = [
     {
       Name: "--name [string]",
       Required: true,
@@ -15,5 +15,7 @@ export class InitCommand implements IArsenalCommand {
     },
   ];
 
-  constructor(public Pipeline: InitPipeline) {}
+  constructor(public Pipeline: InitPipeline) {
+    super();
+  }
 }

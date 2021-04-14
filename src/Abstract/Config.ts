@@ -1,4 +1,4 @@
-import { IArsenalCommand, IArsenalCommandOption } from "./Command";
+import { ArsenalCommand, ArsenalCommandOption } from "./Command";
 
 export interface IConfig {
   Get<T>(key: string): T;
@@ -8,7 +8,7 @@ export class ArsenalConfig {
   constructor(
     public Version = "",
     public ConfigRCOptions = new ConfigOptions(),
-    public Commands: IArsenalCommand<void | Error, unknown>[] = []
+    public Commands: ArsenalCommand<void | Error, unknown>[] = []
   ) {}
 }
 

@@ -29,7 +29,7 @@ export class DIContainer {
     });
 
     // register internal PipelineContext
-    container.register(Token.ContextToken.IPipelineContext, {
+    container.register(Token.ContextToken.IContext, {
       useClass: ChainablePipelineContext,
     });
 

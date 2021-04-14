@@ -1,24 +1,24 @@
-import { IPipelineContext } from "./Context";
+import { IContext } from "./Context";
 import { ICutPoint } from "./CutPoint";
 
-export interface IPipeline<CutPointReturn> {
+export abstract class Pipeline<CutPointReturn> {
   /**
    * pipeline scoped context
    */
-  Context: IPipelineContext;
+  abstract Context: IContext;
 
   /**
    * register cut point to the pipeline
    * @param cutpoint
    */
-  Register(cutpoint: ICutPoint<CutPointReturn>): void;
+  abstract Register(cutpoint: ICutPoint<CutPointReturn>): void;
 
   /**
    * start the pipeline
    */
-  Run(userOptions: Record<string, unknown>): void;
+  abstract Run(userOptions: Record<string, unknown>): void;
 }
 
 export interface IPipelineConstructor<CutPointReturn> {
-  new (options: Record<string, unknown>): IPipeline<CutPointReturn>;
+  new (options: Record<string, unknown>): Pipeline<CutPointReturn>;
 }

@@ -3,10 +3,10 @@ import {
   inject,
   injectable,
   ILogger,
+  IContext,
   IConfig,
   Token,
 } from "../..";
-import { IPipelineContext } from "../../lib/Abstract/Context";
 
 @injectable()
 export class LoginCutPoint extends BasicCutPoint {
@@ -19,7 +19,7 @@ export class LoginCutPoint extends BasicCutPoint {
     super();
   }
 
-  async Intercept(ctx: IPipelineContext): Promise<void> {
+  async Intercept(ctx: IContext): Promise<void> {
     this.logger.Info(
       `[${LoginCutPoint.name}] ctx: ${ctx.Get(
         "options.name"

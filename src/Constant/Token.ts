@@ -14,6 +14,6 @@ export enum ConfigToken {
 }
 
 export enum ContextToken {
-  IPipelineContext = "IPipelineContext",
+  IContext = "IContext",
   PipelineParamCtx = "ctx",
 }

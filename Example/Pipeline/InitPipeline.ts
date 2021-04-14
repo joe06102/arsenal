@@ -6,6 +6,5 @@ export class InitPipeline extends BasicPipeline {
   constructor(private loginCP: LoginCutPoint) {
     super();
     this.Register(loginCP);
-    this.Context.Set("bigjoe", "bj");
   }
 }
