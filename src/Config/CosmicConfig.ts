@@ -19,10 +19,12 @@ export class CosmicConfig implements IConfig {
     }
 
     const { Module, Required } = this.configOptions;
-    const explorer = cosmiconfigSync(Module);
+    const explorer = cosmiconfigSync(Module, {
+      stopDir: process.cwd(),
+    });
     const result = explorer.search();
 
-    if (result?.isEmpty && Required) {
+    if (!result && Required) {
       throw new NotFoundError(this.getSearchedPaths());
     }
 

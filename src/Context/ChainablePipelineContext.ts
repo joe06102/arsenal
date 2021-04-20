@@ -2,6 +2,7 @@ import { IContext, ContextKey } from "../Abstract/Context";
 
 export class ChainablePipelineContext implements IContext {
   private map: Map<ContextKey, unknown> = new Map();
+  private setKeyReg = /\.|\[|\]/;
 
   private getKeys(key: ContextKey) {
     if (typeof key === "symbol") return [key];
@@ -13,8 +14,10 @@ export class ChainablePipelineContext implements IContext {
       switch (key[i]) {
         case ".":
         case "]": {
-          keys.push(curKey);
-          curKey = "";
+          if (curKey) {
+            keys.push(curKey);
+            curKey = "";
+          }
           break;
         }
         case "[": {
@@ -27,11 +30,13 @@ export class ChainablePipelineContext implements IContext {
       }
     }
 
-    keys.push(curKey);
+    curKey && keys.push(curKey);
     return keys;
   }
 
   Get<T>(key: ContextKey) {
+    if (typeof key === "symbol") return this.map.get(key) as T;
+
     let i = 0;
     const keys = this.getKeys(key);
     let ret = this.map.get(keys[i]) as any;
@@ -48,6 +53,10 @@ export class ChainablePipelineContext implements IContext {
   }
 
   Set<T>(key: ContextKey, value: T) {
+    if (typeof key === "string" && this.setKeyReg.test(key)) {
+      throw new TypeError(`nest prop setting is not supported, key: ${key}`);
+    }
+
     this.map.set(key, value);
   }
 }

@@ -22,8 +22,8 @@ export class BasicPipeline extends Pipeline<void> {
       throw new TypeError(`expect cutpoint to be valid, but got ${cutpoint}`);
     }
   }
-  Run(userOptions: Record<string, unknown>): void {
+  Run(userOptions: Record<string, unknown>): Promise<void> {
     userOptions && this.Context.Set("options", userOptions);
-    this.collectCutPoints.promise(this.Context);
+    return this.collectCutPoints.promise(this.Context);
   }
 }

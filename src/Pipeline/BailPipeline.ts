@@ -24,8 +24,8 @@ export class BailPipeline extends Pipeline<BailReturn> {
       throw new TypeError(`expect cutpoint to be valid, but got ${cutpoint}`);
     }
   }
-  Run(userOptions: Record<string, unknown>): void {
+  Run(userOptions: Record<string, unknown>): Promise<BailReturn> {
     userOptions && this.Context.Set("options", userOptions);
-    this.collectCutPoints.promise(this.Context);
+    return this.collectCutPoints.promise(this.Context);
   }
 }

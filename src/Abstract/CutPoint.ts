@@ -1,6 +1,6 @@
 import { IContext } from "../Abstract/Context";
 
-type BailReturn = Error | undefined;
+export type BailReturn = Error | void;
 
 export interface ICutPoint<T> {
   /**

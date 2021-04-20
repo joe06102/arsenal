@@ -1,6 +1,7 @@
 {
   "extends": "@tsconfig/node12/tsconfig.json",
   "include": ["src"],
+  "exclude": ["__tests__"],
   "compilerOptions": {
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,

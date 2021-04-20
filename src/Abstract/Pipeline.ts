@@ -16,7 +16,7 @@ export abstract class Pipeline<CutPointReturn> {
   /**
    * start the pipeline
    */
-  abstract Run(userOptions: Record<string, unknown>): void;
+  abstract Run(userOptions: Record<string, unknown>): Promise<CutPointReturn>;
 }
 
 export interface IPipelineConstructor<CutPointReturn> {
