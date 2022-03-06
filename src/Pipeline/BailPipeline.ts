@@ -3,14 +3,14 @@ import { AsyncSeriesBailHook } from "tapable";
 import { IContext } from "../Abstract/Context";
 import { BailCutPoint } from "../Abstract/CutPoint";
 import { Pipeline } from "../Abstract/Pipeline";
-import { CutPointToken, ContextToken } from "../Constant/Token";
+import { PipelineToken, ContextToken } from "../Constant/Token";
 
 type BailReturn = Error | void;
 
 export class BailPipeline extends Pipeline<BailReturn> {
   private collectCutPoints = container.resolve<
     AsyncSeriesBailHook<IContext, BailReturn>
-  >(CutPointToken.Basic);
+  >(PipelineToken.Bail);
 
   Context: IContext = container.resolve(ContextToken.IContext);
 

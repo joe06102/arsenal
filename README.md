@@ -30,7 +30,7 @@ Arsenal 核心基于 AOP 实现了灵活的插件机制。每一个指令都是�
 
 ## 管道（Pipeline）
 
-Arsenal 中的管道分为 3 种类型，分别是：**基础管道（BasicPipeline）**，**可中断管道（BailPipeline）**，**并行管道（ParallelPipeline）**。
+Arsenal 中的管道分为 3 种类型，分别是：**基础管道（BasicPipeline）**，**可熔断管道（BailPipeline）**，**并行管道（ParallelPipeline）**。
 
 管道主要提供 3 个能力：
 
@@ -58,9 +58,9 @@ export class InitPipeline extends BasicPipeline {
 
 基础管道只支持注册**基础切入点**，并且会按照注册顺序执行切入点，支持同步、异步的切入点处理函数。
 
-### 可中断管道（BailPipeline)
+### 可熔断管道（BailPipeline)
 
-可中断管道只支持注册**可中断切入点**，并且会按照注册顺序执行切入点，支持同步、异步的切入点处理函数。不同于基础管道，如果切入点的上一个处理函数返回了 Error 实例，则立即中断处理流程，不会再执行后续切入点。
+可熔断管道只支持注册**可熔断切入点**，并且会按照注册顺序执行切入点，支持同步、异步的切入点处理函数。不同于基础管道，如果切入点的上一个处理函数返回了 Error 实例，则立即熔断处理流程，不会再执行后续切入点。
 
 ### 并行管道（ParallelPipeline)
 
@@ -68,7 +68,7 @@ export class InitPipeline extends BasicPipeline {
 
 ## 切入点（CutPoint）
 
-切入点对应了 3 种类型的管道，分别是：**基础切入点（BasicCutPoint）**，**可中断切入点（BailCutPoint）**，**并行切入点（ParallelCutPoint）**。
+切入点对应了 3 种类型的管道，分别是：**基础切入点（BasicCutPoint）**，**可熔断切入点（BailCutPoint）**，**并行切入点（ParallelCutPoint）**。
 
 切入点主要功能就是依据当前管道传入的上下文，做出相对应的处理，并且在需要时将处理结果挂载到上下文。
 
@@ -104,9 +104,9 @@ export class LoginCutPoint extends BasicCutPoint {
 
 按照注册顺序被执行。`Intercept` 支持同步、异步。
 
-### 可中断切入点（BailCutPoint)
+### 可熔断切入点（BailCutPoint)
 
-按照注册顺序被执行。`Intercept` 支持同步、异步。不同于基础切入点，可中断切入点支持返回 Error 实例，用于立即中断管道中后续切入点的执行。
+按照注册顺序被执行。`Intercept` 支持同步、异步。不同于基础切入点，可熔断切入点支持返回 Error 实例，用于立即熔断管道中后续切入点的执行。
 
 ### 并行切入点（ParallelCutPoint)
 

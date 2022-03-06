@@ -1,4 +1,4 @@
-export enum CutPointToken {
+export enum PipelineToken {
   Basic = "Basic",
   Bail = "Bail",
   Parallel = "Parallel",

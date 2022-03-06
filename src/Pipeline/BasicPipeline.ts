@@ -3,11 +3,11 @@ import { AsyncSeriesHook } from "tapable";
 import { IContext } from "../Abstract/Context";
 import { BasicCutPoint } from "../Abstract/CutPoint";
 import { Pipeline } from "../Abstract/Pipeline";
-import { CutPointToken, ContextToken } from "../Constant/Token";
+import { PipelineToken, ContextToken } from "../Constant/Token";
 
 export class BasicPipeline extends Pipeline<void> {
   private collectCutPoints = container.resolve<AsyncSeriesHook<IContext>>(
-    CutPointToken.Basic
+    PipelineToken.Basic
   );
 
   Context: IContext = container.resolve(ContextToken.IContext);

@@ -34,15 +34,15 @@ export class DIContainer {
     });
 
     //tapable registry
-    container.register(Token.CutPointToken.Basic, {
+    container.register(Token.PipelineToken.Basic, {
       useFactory: () =>
         new AsyncSeriesHook([Token.ContextToken.PipelineParamCtx]),
     });
-    container.register(Token.CutPointToken.Bail, {
+    container.register(Token.PipelineToken.Bail, {
       useFactory: () =>
         new AsyncSeriesBailHook([Token.ContextToken.PipelineParamCtx]),
     });
-    container.register(Token.CutPointToken.Parallel, {
+    container.register(Token.PipelineToken.Parallel, {
       useFactory: () =>
         new AsyncParallelHook([Token.ContextToken.PipelineParamCtx]),
     });
