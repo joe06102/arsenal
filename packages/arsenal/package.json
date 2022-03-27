@@ -1,0 +1,41 @@
+{
+  "name": "jsouee-arsenal",
+  "version": "1.0.1",
+  "description": "A light-weighted micro framework for creating cli tools.",
+  "main": "src/index.ts",
+  "publishConfig": {
+    "main": "lib/index.js"
+  },
+  "scripts": {
+    "build": "rimraf lib && tsc",
+    "prepack": "npm run build",
+    "demo": "ts-node Example/index.ts",
+    "pub": "npm version patch -m \"publish version %s\" && npm publish",
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/joe06102/arsenal.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/joe06102/arsenal/issues"
+  },
+  "homepage": "https://github.com/joe06102/arsenal#readme",
+  "dependencies": {
+    "@tsconfig/node14": "^1.0.1",
+    "@types/node": "^14.14.37",
+    "chalk": "^4.1.0",
+    "commander": "^7.2.0",
+    "cosmiconfig": "^7.0.0",
+    "inquirer": "^8.0.0",
+    "lodash.get": "^4.4.2",
+    "ora": "^5.4.0",
+    "progress": "^2.0.3",
+    "reflect-metadata": "^0.1.13",
+    "tapable": "^2.2.0",
+    "tsyringe": "^4.5.0"
+  }
+}

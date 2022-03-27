@@ -1,0 +1,14 @@
+{
+  "extends": "@tsconfig/node14/tsconfig.json",
+  "include": ["src"],
+  "exclude": ["**/__tests__"],
+  "compilerOptions": {
+    "esModuleInterop": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "outDir": "lib",
+    "declaration": true,
+    "resolveJsonModule": true,
+    "sourceMap": true,
+  }
+}
