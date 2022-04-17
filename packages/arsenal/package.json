@@ -1,16 +1,19 @@
 {
   "name": "jsouee-arsenal",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A light-weighted micro framework for creating cli tools.",
   "main": "src/index.ts",
   "publishConfig": {
     "main": "lib/index.js"
   },
+  "files": [
+    "lib"
+  ],
   "scripts": {
     "build": "rimraf lib && tsc",
     "prepack": "npm run build",
     "demo": "ts-node Example/index.ts",
-    "pub": "npm version patch -m \"publish version %s\" && npm publish",
+    "pub": "pnpm publish",
     "test": "jest"
   },
   "repository": {

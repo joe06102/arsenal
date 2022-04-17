@@ -40,6 +40,7 @@ export class CosmicConfig implements IConfig {
       `.${name}rc.yml`,
       `.${name}rc.js`,
       `.${name}rc.cjs`,
+      `.${name}.config.json`,
       `.${name}.config.js`,
       `.${name}.config.cjs`,
     ].join(",");

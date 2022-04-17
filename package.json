@@ -1,16 +1,17 @@
 {
-	"devDependencies": {
-		"@types/jest": "^26.0.22",
-		"@types/lodash.get": "^4.4.6",
-		"jest": "^26.6.3",
-		"pnpm": "^6.32.3",
-		"rimraf": "^3.0.2",
-		"ts-jest": "^26.5.4",
-		"ts-node": "^9.1.1",
-		"typescript": "^4.6.3"
-	},
-	"scripts": {
-		"build": "pnpm run build -F ./packages",
-		"test": "pnpm run test -F ./packages"
-	}
+  "devDependencies": {
+    "@types/jest": "^26.0.22",
+    "@types/lodash.get": "^4.4.6",
+    "jest": "^26.6.3",
+    "rimraf": "^3.0.2",
+    "ts-jest": "^26.5.4",
+    "ts-node": "^9.1.1",
+    "typescript": "^4.6.3"
+  },
+  "scripts": {
+    "pub": "pnpm run pub -F ./packages",
+    "build": "pnpm run build -F ./packages",
+    "test": "pnpm run test -F ./packages",
+    "link:arsenal": "cd packages/arsenal && pnpm link --global"
+  }
 }
