@@ -2,6 +2,7 @@ import { ArsenalCommand, ArsenalCommandOption } from "./command";
 
 export interface IConfig {
   Get<T>(key: string): T;
+  GetAll<T>(): T;
 }
 
 export class ArsenalConfig {

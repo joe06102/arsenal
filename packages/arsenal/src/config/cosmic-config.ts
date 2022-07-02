@@ -49,4 +49,10 @@ export class CosmicConfig implements IConfig {
   Get<T>(key: string): T {
     return get(this.config as Record<string, unknown>, key) as T;
   }
+
+  GetAll<T>(): T {
+    return {
+      ...this.config,
+    } as unknown as T;
+  }
 }
